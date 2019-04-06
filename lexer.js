@@ -4,12 +4,11 @@ function splitTokens(str){
     let tokens = [];
     for(let i = 0; i < str.length; i++){
         ch = str.charAt(i);
-        if(isDecimal(ch) || (i == 0 && (ch == '-' || ch == '+') ) ){
+        if(isDecimal(ch) || ch == '-' ){
             let token = new Token(TokenTypeEnum.NUMBER, '');
-            if(ch == '-' || ch == '+'){
-                if(ch == '-'){
-                    token.value += '-';
-                }
+            if(ch == '-'){
+                tokens.push(new Token(TokenTypeEnum.OP_PLUS, '+'));
+                token.value += '-';
                 ch = str.charAt(++i);
             }
             let isDot = false;
@@ -27,8 +26,6 @@ function splitTokens(str){
             tokens.push(token);
         }else if(ch == '+'){
             tokens.push(new Token(TokenTypeEnum.OP_PLUS, '+'));
-        }else if(ch == '-'){
-            tokens.push(new Token(TokenTypeEnum.OP_MINUS, '-'));
         }else if(ch == '*'){
             tokens.push(new Token(TokenTypeEnum.OP_MULT, '*'));
         }else if(ch == '/'){

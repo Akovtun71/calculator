@@ -1,29 +1,29 @@
-function calculate(tokens){
+function calculateNode(tokens){
     let result = 0; 
-    if (tokens[0].type != TokenTypeEnum.NUMBER){
-        throw new Error("Incorrect expression: " + tokens[0].value);
+    if(tokens.value != undefined){
+        return Number.parseFloat(tokens.value);
     }
-    result = Number.parseFloat(tokens[0].value);
-    if(tokens.length < 3) {
+    if(tokens.length == 0) {
         return result;
     }
-    tokens.shift();
-    const token = tokens[0];
-    tokens.shift();
-    if (token.type == TokenTypeEnum.OP_PLUS){ 
-        result += calculate(tokens); 
+    
+
+    result = Number.parseFloat(tokens[0].value);
+
+    for(let i = 1; i < tokens.length; i++){
+        if(tokens[i++].type == TokenTypeEnum.OP_MULT){
+            result *= Number.parseFloat(tokens[i].value);
+        }else{
+            result /= Number.parseFloat(tokens[i].value);
+        }
     }
-    else if (token.type == TokenTypeEnum.OP_MINUS){ 
-        result -= calculate(tokens); 
-    }
-    else if (token.type == TokenTypeEnum.OP_MULT){ 
-        result *= calculate(tokens); 
-    }
-    else if (token.type == TokenTypeEnum.OP_DIV){ 
-        result /= calculate(tokens); 
-    }
-    else {
-        throw new Error("Unexpected operation");
+    return result;
+}
+
+function calculate(tree){
+    let result = 0;
+    for(let i = 0; i < tree.length; i++){
+        result += calculateNode(tree[i]);
     }
     return result;
 }

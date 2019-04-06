@@ -71,8 +71,12 @@ function calc(expr){
     let result = 0;
     try{
         const tokens = splitTokens(expr);
+        const tree = parseTree(tokens);
         console.log(tokens);
-        result = calculate(tokens);
+        console.log(tree);
+        console.log('--------');
+        
+        result = calculate(tree);
     }catch(e){
         console.log(e);
         alert(e.message)
